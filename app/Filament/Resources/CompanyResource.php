@@ -24,18 +24,29 @@ class CompanyResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Назва команії / Ім\'я клієнта')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone_number')
+                    ->label('Телефон')
                     ->tel()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('address')
+                    ->label('Адреса')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('details')
+                    ->label('Інші деталі')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('type')
+//                Forms\Components\TextInput::make('type')
+//                    ->required(),
+                Forms\Components\Select::make('type')
+                    //->relationship('eparchy', 'name')
+                    ->options([
+                        'supplier' => 'Постачальники',
+                        'client' => 'Клієнти',
+                    ])
                     ->required(),
             ]);
     }

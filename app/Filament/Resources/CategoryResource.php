@@ -17,19 +17,33 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+
+    protected static ?string $navigationIcon = 'heroicon-m-puzzle-piece';
+    protected static ?string $navigationLabel = 'Категорії';
+    protected static ?string $navigationGroup = 'Налаштування';
+
+//    protected static ?string $modelLabel = 'Громада';
+
+  //  protected static ?string $pluralModelLabel = 'Громади';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Назва категорії')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
+                    ->label('Опис категорії')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('parent_id')
-                    ->numeric(),
+//                Forms\Components\TextInput::make('parent_id')
+//                    ->numeric(),
+                Forms\Components\Select::make('parent_id')
+                    ->label('Належить до категорії')
+                    ->relationship('parent', 'name'),
             ]);
     }
 
