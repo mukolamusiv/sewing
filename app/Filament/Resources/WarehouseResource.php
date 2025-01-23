@@ -17,16 +17,24 @@ class WarehouseResource extends Resource
 {
     protected static ?string $model = Warehouse::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-arrows-pointing-out';
+    protected static ?string $navigationLabel = 'Склади';
+    protected static ?string $navigationGroup = 'Продукція';
+
+    protected static ?string $modelLabel = 'Склад';
+
+    protected static ?string $pluralModelLabel = 'Склади';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Назва складу')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
+                    ->label('Опис складу')
                     ->columnSpanFull(),
             ]);
     }
@@ -36,6 +44,10 @@ class WarehouseResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Назва складу')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Опис')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

@@ -23,9 +23,9 @@ class CategoryResource extends Resource
     protected static ?string $navigationLabel = 'Категорії';
     protected static ?string $navigationGroup = 'Налаштування';
 
-//    protected static ?string $modelLabel = 'Громада';
+    protected static ?string $modelLabel = 'Категорія';
 
-  //  protected static ?string $pluralModelLabel = 'Громади';
+    protected static ?string $pluralModelLabel = 'Категорії';
 
 
     public static function form(Form $form): Form
@@ -52,9 +52,11 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Назва категорії')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('parent_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('parent.name')
+                    ->label('Батьківська категорія')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

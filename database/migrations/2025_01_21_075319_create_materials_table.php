@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('barcode')->unique();
+            $table->string('barcode')->unique()->nullable();
             $table->text('description')->nullable();
             $table->string('unit');
             $table->string('photo')->nullable();

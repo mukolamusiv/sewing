@@ -17,7 +17,14 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationLabel = 'Постачальники/клієнти';
+    protected static ?string $navigationGroup = 'Менеджмент';
+
+    protected static ?string $modelLabel = 'Постачальники/клієнти';
+
+    protected static ?string $pluralModelLabel = 'Постачальники/клієнти';
+
 
     public static function form(Form $form): Form
     {
@@ -56,12 +63,22 @@ class CompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Назва')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone_number')
+                    ->label('Телефон')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address')
+                    ->label('Адреса')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Тип')
+                    ->sortable()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'client' => 'success',
+                        'supplier' => 'danger',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -76,7 +93,13 @@ class CompanyResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                //Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('type')
+                    ->label('Фільтрувати клієнти/постачальники')
+                    ->options([
+                        'client' => 'Клієнт',
+                        'supplier' => 'Постачальник',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

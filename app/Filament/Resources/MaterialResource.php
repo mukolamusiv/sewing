@@ -17,31 +17,94 @@ class MaterialResource extends Resource
 {
     protected static ?string $model = Material::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-s-scissors';
+    protected static ?string $navigationLabel = 'Матеріали';
+    protected static ?string $navigationGroup = 'Налаштування';
+
+    protected static ?string $modelLabel = 'Метаріал';
+
+    protected static ?string $pluralModelLabel = 'Матеріали';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Назва матеріалу')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('barcode')
+                    ->label('Унікальний код')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
+                    ->label('Опис матерілау')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('unit')
+                Forms\Components\Select::make('unit')
+                    ->label('Одиниця вимірювання')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('photo')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('category_id')
+                    ->options([
+                        'm' => 'Метри',
+                        'sm' => 'Сантиметри',
+                        'mm' => 'Міліметри',
+                        'm-p' => 'Метри погонні',
+                        'sm-p' => 'Сантиметри погонні',
+                        'mm-p' => 'Міліметри погонні',
+                        'm2' => 'Метри квадратні',
+                        'od' => 'Одиниці',
+                    ]),
+                Forms\Components\FileUpload::make('photo')
+                    ->label('Фото матерілау'),
+                Forms\Components\Select::make('category_id')
+                    ->label('Категорія')
+                    ->searchable('name')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('product_type_id')
+                    ->preload()
+                    ->relationship('category', 'name')
+                ->createOptionForm([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Назва категорії')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\Textarea::make('description')
+                        ->label('Опис категорії')
+                        ->columnSpanFull(),
+//                Forms\Components\TextInput::make('parent_id')
+//                    ->numeric(),
+                    Forms\Components\Select::make('parent_id')
+                        ->label('Належить до категорії')
+                        ->relationship('parent', 'name'),
+                ]),
+
+
+                Forms\Components\Select::make('product_type_id')
+                    ->label('Тип продукту')
                     ->required()
-                    ->numeric(),
+                    ->searchable()
+                    ->preload()
+                    ->relationship('productType', 'name')
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Назва типу продукції')
+                            ->required(),
+                        Forms\Components\TextInput::make('description')
+                            ->label('Опис типу продукції')
+                            ->required(),
+                        Forms\Components\Select::make('unit')
+                            ->label('Одиниця вимірювання')
+                            ->required()
+                            ->options([
+                                'm' => 'Метри',
+                                'sm' => 'Сантиметри',
+                                'mm' => 'Міліметри',
+                                'm-p' => 'Метри погонні',
+                                'sm-p' => 'Сантиметри погонні',
+                                'mm-p' => 'Міліметри погонні',
+                                'm2' => 'Метри квадратні',
+                                'od' => 'Одиниці',
+                            ]),
+                    ]),
             ]);
     }
 
@@ -50,18 +113,22 @@ class MaterialResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Назва матеріалу')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('barcode')
+                    ->label('Унікальний код')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('unit')
+                    ->label('Одиниця вимірювання')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('photo')
+                    ->label('Фото')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Категорія')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('product_type_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('productType.name')
+                    ->label('Тип продукту')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
