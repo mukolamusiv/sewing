@@ -17,37 +17,73 @@ class StockMovementResource extends Resource
 {
     protected static ?string $model = StockMovement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+   // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+
+    protected static ?string $navigationIcon = 'heroicon-m-arrows-pointing-out';
+    protected static ?string $navigationLabel = 'Переміщення по складу';
+    protected static ?string $navigationGroup = 'Продукція';
+
+    protected static ?string $modelLabel = 'Переміщення по складу';
+
+    protected static ?string $pluralModelLabel = 'Переміщення по складу';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('warehouse_id')
+                Forms\Components\Select::make('warehouse_id')
+                    ->label('Склад')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('material_id')
+                    ->relationship('warehouse', 'name'),
+                Forms\Components\Select::make('material_id')
+                    ->label('Матеріал')
                     ->required()
-                    ->numeric(),
+                    ->relationship('material', 'name'),
                 Forms\Components\TextInput::make('quantity')
+                    ->label('Кількість')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('unit')
+                Forms\Components\Select::make('unit')
+                    ->label('Одиниця вимірювання') // дописати автоматичне підтягнення за матеріалом
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                        'm' => 'Метри',
+                        'sm' => 'Сантиметри',
+                        'mm' => 'Міліметри',
+                        'm-p' => 'Метри погонні',
+                        'sm-p' => 'Сантиметри погонні',
+                        'mm-p' => 'Міліметри погонні',
+                        'm2' => 'Метри квадратні',
+                        'od' => 'Одиниці',
+                    ]),
                 Forms\Components\TextInput::make('balance_before')
-                    ->required()
+                    ->label('Кількість перед переміщенням')
+                    ->required() //треба дописати механізм автоматичного вирахування
                     ->numeric(),
                 Forms\Components\TextInput::make('balance_after')
+                    ->label('Актуальна кількість')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('supplier_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('movement_type')
-                    ->required(),
-                Forms\Components\TextInput::make('user_id')
+                Forms\Components\Select::make('supplier_id')
+                    ->label('Постачальник/Клієнт')
+                    ->searchable()
+                    ->preload()
+                    ->relationship('supplier', 'name'),
+                Forms\Components\Select::make('movement_type')
+                    ->label('Тип переміщення')
                     ->required()
-                    ->numeric(),
+                    ->options([
+                        'in' => 'Надходження',
+                        'out' => 'Списання',
+                    ]),
+                Forms\Components\Select::make('user_id')
+                    ->label('Користувач що здійснив переміщення')
+                    ->required() // дописати автоматичне заповнення активним користувачем
+                    ->searchable()
+                    ->preload()
+                    ->relationship('user', 'name'),
             ]);
     }
 
@@ -55,29 +91,35 @@ class StockMovementResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('warehouse_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('warehouse.name')
+                    ->label('Склад')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('material_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('material.name')
+                    ->label('Матеріал')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity')
+                    ->label('Кількість')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit')
+                    ->label('Одиниця виміру')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('balance_before')
+                    ->label('Попередній залишок')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('balance_after')
+                    ->label('Залишок після переміщення')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('supplier_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('supplier.name')
+                    ->label('Постачальник/Клієнт')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('movement_type'),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('movement_type')
+                    ->label('Тип переміщення'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Користувач')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

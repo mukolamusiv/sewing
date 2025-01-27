@@ -17,24 +17,43 @@ class InventoryResource extends Resource
 {
     protected static ?string $model = Inventory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+   // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-m-arrows-pointing-out';
+    protected static ?string $navigationLabel = 'Залишок на складі';
+    protected static ?string $navigationGroup = 'Продукція';
+
+    protected static ?string $modelLabel = 'Залишок';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('warehouse_id')
+                Forms\Components\Select::make('warehouse_id')
+                    ->label('Склад')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('material_id')
+                    ->relationship('warehouse', 'name'),
+                Forms\Components\Select::make('material_id')
                     ->required()
-                    ->numeric(),
+                    ->label('Матеріал')
+                    ->relationship('material', 'name'),
                 Forms\Components\TextInput::make('quantity')
+                    ->label('Кількість')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('unit')
+                Forms\Components\Select::make('unit')
+                    ->label('Одиниця вимірювання') // дописати автоматичне підтягнення за матеріалом
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                        'm' => 'Метри',
+                        'sm' => 'Сантиметри',
+                        'mm' => 'Міліметри',
+                        'm-p' => 'Метри погонні',
+                        'sm-p' => 'Сантиметри погонні',
+                        'mm-p' => 'Міліметри погонні',
+                        'm2' => 'Метри квадратні',
+                        'od' => 'Одиниці',
+                    ]),
             ]);
     }
 
@@ -42,25 +61,28 @@ class InventoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('warehouse_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('warehouse.name')
+                    ->label('Склад')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('material_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('material.name')
+                    ->label('Матеріал')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity')
+                    ->label('Кількість')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit')
+                    ->label('Одиниця вимірювання')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Оновлено')
+                    ->dateTime('H:i d M Y')
+                    ->sortable(),
+                    //->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
