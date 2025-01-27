@@ -88,7 +88,7 @@ class OrderTemplateResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProcessRelationManager::class
         ];
     }
 

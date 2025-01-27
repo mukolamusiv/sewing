@@ -17,7 +17,14 @@ class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-o-document-plus';
+    protected static ?string $navigationLabel = 'Замовлення';
+    protected static ?string $navigationGroup = 'Замовлення';
+
+    protected static ?string $modelLabel = 'Замовлення';
+
+    protected static ?string $pluralModelLabel = 'Замовлення';
 
     public static function form(Form $form): Form
     {
@@ -58,15 +65,19 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id')
+                Tables\Columns\TextColumn::make('company.name')
+                    ->label('Замовник')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Статус замовлення'),
                 Tables\Columns\TextColumn::make('total_cost')
+                    ->label('Вартість')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order_template_id')
                     ->numeric()
+                    ->hidden()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -99,7 +110,9 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProcessRelationManager::class,
+            RelationManagers\MaterialsRelationManager::class,
+
         ];
     }
 
