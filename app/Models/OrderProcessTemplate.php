@@ -19,6 +19,6 @@ class OrderProcessTemplate extends Model
 
     public function templates(): BelongsToMany
     {
-        return $this->belongsToMany(OrderTemplate::class,'order_process_to_templates','order_process_templates_id','order_templates_id');
+        return $this->belongsToMany(OrderTemplate::class, 'order_process_to_templates', 'order_process_template_id', 'order_template_id');
     }
 }

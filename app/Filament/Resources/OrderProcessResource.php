@@ -23,9 +23,9 @@ class OrderProcessResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('order_id')
+                Forms\Components\Select::make('order_id')
                     ->required()
-                    ->numeric(),
+                    ->relationship('order', 'order'),
                 Forms\Components\TextInput::make('step')
                     ->required()
                     ->maxLength(255),

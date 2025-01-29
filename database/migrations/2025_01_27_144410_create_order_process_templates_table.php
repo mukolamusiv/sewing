@@ -22,8 +22,8 @@ return new class extends Migration
 
         Schema::create('order_process_to_templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_process_templates_id')->constrained('order_process_templates')->onDelete('cascade');
-            $table->foreignId('order_templates_id')->constrained('order_templates')->onDelete('cascade');
+            $table->foreignId('order_process_template_id')->constrained('order_process_templates')->onDelete('cascade');
+            $table->foreignId('order_template_id')->constrained('order_templates')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -22,8 +22,8 @@ class OrderTemplate extends Model
         return $this->hasOne(Material::class, 'id', 'material_id');
     }
 
-    public function process(): BelongsToMany
+    public function processes(): BelongsToMany
     {
-        return $this->belongsToMany(OrderProcessTemplate::class,'order_process_to_templates','order_process_templates_id','order_templates_id');
+        return $this->belongsToMany(OrderProcessTemplate::class, 'order_process_to_templates', 'order_template_id', 'order_process_template_id');
     }
 }

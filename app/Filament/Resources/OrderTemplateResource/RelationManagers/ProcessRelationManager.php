@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProcessRelationManager extends RelationManager
 {
-    protected static string $relationship = 'process';
+    protected static string $relationship = 'processes';
 
     public function form(Form $form): Form
     {
@@ -20,7 +20,17 @@ class ProcessRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('step')
                     ->required()
+                    ->label('Назва етапу виробництва')
                     ->maxLength(255),
+                Forms\Components\TextInput::make('hours_worked')
+                    ->label('Час виконання (у хвилинах)')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\TextInput::make('rate_per_hour')
+                    ->label('Вартість години роботи')
+                    ->required(),
+                Forms\Components\Checkbox::make('is_moving')
+                    ->label('Відбувається списання зі складу під час етапу'),
             ]);
     }
 
