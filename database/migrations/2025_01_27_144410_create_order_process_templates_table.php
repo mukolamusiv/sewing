@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('step');
             $table->decimal('hours_worked', 10, 2);
-            $table->decimal('rate_per_hour', 10, 2);
-            $table->boolean('is_moving')->default(false);
+            $table->decimal('rate_per', 10, 2);
             $table->timestamps();
         });
 

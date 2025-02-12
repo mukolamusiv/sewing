@@ -51,8 +51,8 @@ class CompanyResource extends Resource
                 Forms\Components\Select::make('type')
                     //->relationship('eparchy', 'name')
                     ->options([
-                        'supplier' => 'Постачальники',
-                        'client' => 'Клієнти',
+                        'постачальник' => 'Постачальники',
+                        'клієнт' => 'Клієнти',
                     ])
                     ->required(),
             ]);
@@ -76,8 +76,8 @@ class CompanyResource extends Resource
                     ->sortable()
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'client' => 'success',
-                        'supplier' => 'danger',
+                        'клієнт' => 'success',
+                        'постачальник' => 'danger',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

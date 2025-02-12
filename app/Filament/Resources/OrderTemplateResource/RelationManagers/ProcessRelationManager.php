@@ -26,7 +26,7 @@ class ProcessRelationManager extends RelationManager
                     ->label('Час виконання (у хвилинах)')
                     ->numeric()
                     ->required(),
-                Forms\Components\TextInput::make('rate_per_hour')
+                Forms\Components\TextInput::make('rate_per')
                     ->label('Вартість години роботи')
                     ->required(),
                 Forms\Components\Checkbox::make('is_moving')

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('material_id')->constrained('materials');
             $table->foreignId('order_id')->constrained('orders');
-            $table->decimal('unit_cost', 10, 2)->nullable();
             $table->decimal('quantity', 8, 2);
             $table->timestamps();
         });

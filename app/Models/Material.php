@@ -15,7 +15,7 @@ class Material extends Model
         'unit',
         'photo',
         'category_id',
-        'product_type_id',
+       // 'product_type_id',
     ];
 
     public function category()
@@ -23,8 +23,8 @@ class Material extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function productType()
+   /* public function productType()
     {
         return $this->belongsTo(ProductType::class);
-    }
+    }*/
 }

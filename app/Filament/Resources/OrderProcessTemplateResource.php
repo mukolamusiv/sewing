@@ -41,7 +41,7 @@ class OrderProcessTemplateResource extends Resource
                     ->label('Час виконання (у хвилинах)')
                     ->numeric()
                     ->required(),
-                Forms\Components\TextInput::make('rate_per_hour')
+                Forms\Components\TextInput::make('rate_per')
                     ->label('Вартість години роботи')
                     ->required(),
                 Forms\Components\Checkbox::make('is_moving')
@@ -58,7 +58,7 @@ class OrderProcessTemplateResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('hours_worked')
                     ->label('Час'),
-                Tables\Columns\TextColumn::make('rate_per_hour')
+                Tables\Columns\TextColumn::make('rate_per')
                     ->label('Вартість')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('is_moving')

@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
+            $table->foreignId('warehouse_in_id')->nullable()->constrained('warehouses')->onDelete('cascade');
             $table->foreignId('material_id')->constrained()->onDelete('cascade');
             $table->decimal('quantity', 8, 2);
-            $table->string('unit');
-            $table->decimal('balance_before', 8, 2);
-            $table->decimal('balance_after', 8, 2);
             $table->foreignId('supplier_id')->nullable()->constrained('companies')->onDelete('cascade');
-            $table->enum('movement_type', ['in', 'out']);
+            $table->enum('movement_type', ['in', 'out','move']);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('warehouse_out_id')->nullable()->constrained('warehouses')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

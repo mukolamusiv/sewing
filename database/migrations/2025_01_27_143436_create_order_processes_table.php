@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->string('step');
-            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
+            $table->enum('status', ['expectation', 'is_performed', 'done'])->default('expectation');
             $table->foreignId('user_to')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
+            $table->decimal('rate_per', 10, 2);
             $table->timestamps();
         });
     }

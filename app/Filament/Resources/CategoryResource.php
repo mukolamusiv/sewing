@@ -28,6 +28,7 @@ class CategoryResource extends Resource
     protected static ?string $pluralModelLabel = 'Категорії';
 
 
+
     public static function form(Form $form): Form
     {
         return $form

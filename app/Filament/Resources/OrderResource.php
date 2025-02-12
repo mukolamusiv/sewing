@@ -4,6 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
+use App\Filament\Resources\OrderResource\Widgets\CurrentProcessStageWidget;
+use App\Filament\Resources\OrderResource\Widgets\MaterialsCountWidget;
+use App\Filament\Resources\OrderResource\Widgets\TotalCostWidget;
+use App\Filament\Resources\OrderResource\Widgets\TotlaCost;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -37,13 +41,13 @@ class OrderResource extends Resource
                 Forms\Components\Select::make('status')
                     ->label('Статус замовлення')
                     ->required()
-                ->options([
-                    'погодження',
-                    'прийнято',
-                    'в процесі',
-                    'відмовлено',
-                    'готово',
-                ]),
+                    ->options([
+                        'new' => 'Нове',
+                        'ordering_materials' => 'Замовлення матеріалів',
+                        'is_performed' => 'Виконується',
+                        'done' => 'Виконано',
+                        'delivered' => 'Доставлено',
+                    ]),
                 Forms\Components\TextInput::make('total_cost')
                     ->label('Орієнтовна вартість')
                     ->hidden()
@@ -68,6 +72,9 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('company.name')
                     ->label('Замовник')
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('template.name')
+                    ->label('Продукт')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Статус замовлення'),
@@ -131,5 +138,15 @@ class OrderResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            TotlaCost::class,
+            CurrentProcessStageWidget::class,
+            MaterialsCountWidget::class,
+            TotalCostWidget::class,
+        ];
     }
 }

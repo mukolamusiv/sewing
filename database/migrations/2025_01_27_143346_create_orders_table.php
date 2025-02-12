@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('companies')->onDelete('cascade');
-            $table->enum('status', ['new', 'in_progress', 'completed'])->default('new');
+            $table->enum('status', ['new','ordering_materials', 'is_performed', 'done','delivered'])->default('new');
             $table->decimal('total_cost', 10, 2)->nullable();
-            $table->foreignId('order_template_id')->constrained('order_templates')->onDelete('cascade');
+            $table->foreignId('order_template_id')->nullable()->constrained('order_templates')->onDelete('cascade');
+            $table->string('time')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

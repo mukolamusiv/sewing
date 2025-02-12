@@ -78,7 +78,7 @@ class MaterialResource extends Resource
                 ]),
 
 
-                Forms\Components\Select::make('product_type_id')
+              /*  Forms\Components\Select::make('product_type_id')
                     ->label('Тип продукту')
                     ->required()
                     ->searchable()
@@ -104,7 +104,7 @@ class MaterialResource extends Resource
                                 'm2' => 'Метри квадратні',
                                 'od' => 'Одиниці',
                             ]),
-                    ]),
+                    ]),*/
             ]);
     }
 

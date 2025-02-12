@@ -6,6 +6,7 @@ use App\Filament\Resources\StockMovementResource\Pages;
 use App\Filament\Resources\StockMovementResource\RelationManagers;
 use App\Models\StockMovement;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -33,10 +34,37 @@ class StockMovementResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('warehouse_id')
-                    ->label('Склад')
+                Section::make('Основне')->schema([
+                    Forms\Components\Select::make('movement_type')
+                    ->label('Тип переміщення')
                     ->required()
-                    ->relationship('warehouse', 'name'),
+                    ->options([
+                        'in' => 'Надходження',
+                        'out' => 'Списання',
+                        'move'=> 'Переміщення',
+                    ])->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state === 'in') {
+                            $set('warehouse_in_id', null);
+                            $set('warehouse_out_id', null);
+                        } elseif ($state === 'move') {
+                            $set('warehouse_in_id', null);
+                            $set('warehouse_out_id', null);
+                        }
+                    }),
+
+                Forms\Components\Select::make('warehouse_in_id')
+                    ->label('На склад')
+                    ->visible(fn ($get) => $get('movement_type') === 'in' || $get('movement_type') === 'move')
+                    ->required(fn ($get) => $get('movement_type') === 'in' || $get('movement_type') === 'move')
+                    ->relationship('warehouse_in', 'name'),
+
+                    Forms\Components\Select::make('warehouse_out_id')
+                    ->label('Зі складу')
+                    ->visible(fn ($get) => $get('movement_type') === 'out' || $get('movement_type') === 'move')
+                    ->required(fn ($get) => $get('movement_type') === 'out' || $get('movement_type') === 'move')
+
+                    ->relationship('warehouse_out', 'name'),
                 Forms\Components\Select::make('material_id')
                     ->label('Матеріал')
                     ->required()
@@ -71,21 +99,45 @@ class StockMovementResource extends Resource
                     ->searchable()
                     ->preload()
                     ->relationship('supplier', 'name'),
-                Forms\Components\Select::make('movement_type')
-                    ->label('Тип переміщення')
-                    ->required()
-                    ->options([
-                        'in' => 'Надходження',
-                        'out' => 'Списання',
-                    ]),
+
                 Forms\Components\Select::make('user_id')
                     ->label('Користувач що здійснив переміщення')
                     ->required() // дописати автоматичне заповнення активним користувачем
                     ->searchable()
                     ->preload()
                     ->relationship('user', 'name'),
+                ])
+
+
             ]);
+
+/*
+            ->afterSave(function ($record) {
+                // Дії після збереження форми
+                // Наприклад, оновлення балансу після переміщення
+              //  $record->balance_after = $record->balance_before - $record->quantity; // Приклад, змініть на ваш механізм
+            });*/
     }
+
+
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        dd($data);
+        // Дії перед створенням запису
+        //$data['balance_before'] = $data['quantity']; // Приклад, змініть на ваш механізм
+        return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        dd($data);
+        // Дії перед збереженням запису
+       // $data['balance_after'] = $data['balance_before'] - $data['quantity']; // Приклад, змініть на ваш механізм
+        return $data;
+    }
+
+
 
     public static function table(Table $table): Table
     {

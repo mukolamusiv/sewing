@@ -21,8 +21,13 @@ class CreateOrder extends CreateRecord
         foreach ($template->processes as $process){
             $step = new OrderProcess();
             $step->step = $process->step;
-            $step->status = 'pending';
+            $step->status = 'в очікуванні';
             $step->order_id = $this->record->id;
+            if(empty($this->record->rate_per)){
+                $step->rate_per = 100;
+            }else{
+                $step->rate_per = $this->record->rate_per;
+            }
             $step->save();
         }
 

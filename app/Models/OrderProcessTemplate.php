@@ -12,7 +12,7 @@ class OrderProcessTemplate extends Model
     protected $fillable = [
         'step',
         'hours_worked',
-        'rate_per_hour',
+        'rate_per',
         'is_moving',
     ];
 
