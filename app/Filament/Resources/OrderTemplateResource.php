@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderTemplateResource\Pages;
 use App\Filament\Resources\OrderTemplateResource\RelationManagers;
+use App\Filament\Resources\OrderTemplateResource\RelationManagers\MaterialRelationManager;
 use App\Models\OrderTemplate;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -42,6 +43,8 @@ class OrderTemplateResource extends Resource
                     ->relationship('material', 'name'),
                 Forms\Components\TextInput::make('price')
                     ->required()
+                    ->hidden()
+                    ->default(100)
                     ->label('Орієнтовна вартість вартість')
             ]);
     }
@@ -88,7 +91,8 @@ class OrderTemplateResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProcessRelationManager::class
+            RelationManagers\ProcessRelationManager::class,
+            RelationManagers\MaterialRelationManager::class
         ];
     }
 

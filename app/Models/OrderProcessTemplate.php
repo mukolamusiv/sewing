@@ -13,7 +13,6 @@ class OrderProcessTemplate extends Model
         'step',
         'hours_worked',
         'rate_per',
-        'is_moving',
     ];
 
 

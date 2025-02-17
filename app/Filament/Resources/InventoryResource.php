@@ -41,7 +41,7 @@ class InventoryResource extends Resource
                     ->label('Кількість')
                     ->required()
                     ->numeric(),
-                Forms\Components\Select::make('unit')
+               /* Forms\Components\Select::make('unit')
                     ->label('Одиниця вимірювання') // дописати автоматичне підтягнення за матеріалом
                     ->required()
                     ->options([
@@ -53,7 +53,7 @@ class InventoryResource extends Resource
                         'mm-p' => 'Міліметри погонні',
                         'm2' => 'Метри квадратні',
                         'od' => 'Одиниці',
-                    ]),
+                    ]),*/
             ]);
     }
 
@@ -63,15 +63,17 @@ class InventoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('warehouse.name')
                     ->label('Склад')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('material.name')
                     ->label('Матеріал')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Кількість')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('unit')
+                Tables\Columns\TextColumn::make('material.unit')
                     ->label('Одиниця вимірювання')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -115,7 +117,7 @@ class InventoryResource extends Resource
         return [
             'index' => Pages\ListInventories::route('/'),
             'create' => Pages\CreateInventory::route('/create'),
-            'edit' => Pages\EditInventory::route('/{record}/edit'),
+           // 'edit' => Pages\EditInventory::route('/{record}/edit'),
         ];
     }
 

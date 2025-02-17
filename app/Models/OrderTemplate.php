@@ -17,9 +17,9 @@ class OrderTemplate extends Model
         'price',
     ];
 
-    public function material() :HasOne
+    public function material() :BelongsToMany
     {
-        return $this->hasOne(Material::class, 'id', 'material_id');
+        return $this->belongsToMany(Material_orders_tempale::class, 'material_order_to_templates', 'order_template_id','material_orders_tempales_id');
     }
 
     public function processes(): BelongsToMany

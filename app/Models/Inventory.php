@@ -13,7 +13,6 @@ class Inventory extends Model
         'warehouse_id',
         'material_id',
         'quantity',
-        'unit',
     ];
 
     public function warehouse()
