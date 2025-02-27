@@ -20,11 +20,26 @@ class MaterialOrderTemplateResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+
+    //protected static ?string $navigationIcon = 'heroicon-s-scissors';
+    protected static ?string $navigationLabel = 'Шаблони метеріалів';
+    protected static ?string $navigationGroup = 'Шаблони';
+
+    protected static ?string $modelLabel = 'Шаблони метеріалів';
+
+    protected static ?string $pluralModelLabel = 'Шаблони метеріалів';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('material_id')
+                    ->required(),
+                Forms\Components\TextInput::make('order_template_id')
+                    ->required(),
+                Forms\Components\TextInput::make('quantity')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -32,7 +47,13 @@ class MaterialOrderTemplateResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('material_id'),
+                Tables\Columns\TextColumn::make('order_template_id'),
+                Tables\Columns\TextColumn::make('quantity'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime(),
             ])
             ->filters([
                 //

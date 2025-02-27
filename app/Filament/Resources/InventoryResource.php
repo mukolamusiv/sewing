@@ -76,6 +76,12 @@ class InventoryResource extends Resource
                 Tables\Columns\TextColumn::make('material.unit')
                     ->label('Одиниця вимірювання')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('total_cost')
+                    ->label('Загальна вартість')
+                    ->getStateUsing(function ($record) {
+                        return $record->quantity * $record->material->unit_cost;
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

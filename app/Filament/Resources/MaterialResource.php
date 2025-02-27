@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MaterialResource\Pages;
 use App\Filament\Resources\MaterialResource\RelationManagers;
+use App\Filament\Resources\MaterialResource\Widgets\StockMaterialWidget;
 use App\Models\Material;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -56,6 +57,11 @@ class MaterialResource extends Resource
                     ]),
                 Forms\Components\FileUpload::make('photo')
                     ->label('Фото матерілау'),
+                Forms\Components\TextInput::make('unit_cost')
+                    ->label('Ціна за одиницю')
+                    ->numeric()
+                    ->step(0.01),
+
                 Forms\Components\Select::make('category_id')
                     ->label('Категорія')
                     ->searchable('name')
@@ -121,6 +127,11 @@ class MaterialResource extends Resource
                 Tables\Columns\TextColumn::make('unit')
                     ->label('Одиниця вимірювання')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('unit_cost')
+                    ->label('Ціна за одиницю')
+                    ->numeric()
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('photo')
                     ->label('Фото')
                     ->searchable(),
@@ -171,6 +182,13 @@ class MaterialResource extends Resource
             'index' => Pages\ListMaterials::route('/'),
             'create' => Pages\CreateMaterial::route('/create'),
             'edit' => Pages\EditMaterial::route('/{record}/edit'),
+        ];
+    }
+
+    public function getWidget(): array
+    {
+        return [
+            StockMaterialWidget::class,
         ];
     }
 
