@@ -36,7 +36,22 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('role')
+                    ->required(),
+                Forms\Components\TextInput::make('profile_photo_path')
+                    ->maxLength(2048),
+                Forms\Components\TextInput::make('phone')
+                    ->tel()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('address')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('walet_balans')
+                    ->required()
+                    ->numeric()
+                    ->default(0.00),
+                Forms\Components\TextInput::make('walet_cash')
+                    ->required()
+                    ->numeric()
+                    ->default(0.00),
             ]);
     }
 
@@ -51,8 +66,19 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('role')
+                Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\TextColumn::make('profile_photo_path')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('address')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('walet_balans')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('walet_cash')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

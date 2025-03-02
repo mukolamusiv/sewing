@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('wallet_id')->constrained('wallets')->cascadeOnDelete();
-            $table->decimal('count', 10, 2);
             $table->decimal('amount', 10, 2);
-            $table->enum('type', ['debet', 'credet'])->default('debet');
+            $table->decimal('wallet_to', 10, 2);
+            $table->decimal('wallet_after', 10, 2);
+            $table->enum('type', ['надходження', 'списання'])->default('надходження');
             $table->string('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('companies_id')->nullable()->constrained('companies');
             $table->timestamps();
         });
     }

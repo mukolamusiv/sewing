@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('material_id')->constrained('materials');
+            //$table->foreignId('material_id')->constrained('materials');
             $table->foreignId('companies_id')->constrained('companies');
-            $table->decimal('count', 10, 2)->default(0);
+            //$table->decimal('count', 10, 2)->default(0);
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('warehouse_id')->constrained('warehouses');
-            $table->foreignId('order_id')->nullable()->constrained('orders');
-            $table->decimal('price',10,2)->default(0);
+            //$table->foreignId('warehouse_id')->constrained('warehouses');
+            //$table->foreignId('order_id')->nullable()->constrained('orders');
+            $table->decimal('total',10,2)->default(0);
+            $table->decimal('discount',10,2)->default(0);
+            $table->decimal('total_discount',10,2)->default(0);
+            $table->decimal('total_payment',10,2)->default(0);
             $table->timestamps();
         });
     }

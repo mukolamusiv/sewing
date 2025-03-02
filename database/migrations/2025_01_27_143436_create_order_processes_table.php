@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->string('step');
-            $table->enum('status', ['expectation', 'is_performed', 'done'])->default('expectation');
+            $table->enum('status', ['очікує', 'в процесі', 'готово'])->default('очікує');
             $table->foreignId('user_to')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();

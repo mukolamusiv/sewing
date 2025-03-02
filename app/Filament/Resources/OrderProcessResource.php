@@ -17,24 +17,38 @@ class OrderProcessResource extends Resource
 {
     protected static ?string $model = OrderProcess::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    //protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-o-document-plus';
+    protected static ?string $navigationLabel = 'Етапи замолень';
+    protected static ?string $navigationGroup = 'Замовлення';
+
+    protected static ?string $modelLabel = 'Етап замолення';
+
+    protected static ?string $pluralModelLabel = 'Етапи замолень';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('order_id')
+                    ->label('Замовлення')
                     ->required()
-                    ->relationship('order', 'order'),
+                    ->relationship('order', 'status'),
                 Forms\Components\TextInput::make('step')
+                    ->label('Етап')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('status')
+                    ->label('Статус')
                     ->required(),
                 Forms\Components\TextInput::make('user_to')
+                    ->label('Виконавець')
                     ->numeric(),
-                Forms\Components\DateTimePicker::make('start_time'),
-                Forms\Components\DateTimePicker::make('end_time'),
+                Forms\Components\DateTimePicker::make('start_time')
+                    ->label('Початок'),
+                Forms\Components\DateTimePicker::make('end_time')
+                    ->label('Завершення'),
             ]);
     }
 
@@ -44,17 +58,25 @@ class OrderProcessResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('order_id')
                     ->numeric()
+                    ->label('Замовлення')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('step')
+                    ->label('Етап')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Статус'),
                 Tables\Columns\TextColumn::make('user_to')
+                    ->label('Виконавець')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_time')
+                    ->label('Початок')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_time')
+                    ->label('Завершення')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
