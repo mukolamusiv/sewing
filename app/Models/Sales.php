@@ -18,6 +18,14 @@ class Sales extends Model
         'total_payment',
     ];
 
+    public function update(array $attributes = [], array $options = [])
+    {
+        $this->total();
+        //$this->total_discount = $this->total_discount();
+        //$this->total_payment = $this->total_discount - $this->total_discount * $this->discount / 100;
+        return parent::update($attributes, $options);
+    }
+
 
     public function materials()
     {
@@ -37,5 +45,15 @@ public function order(): BelongsTo
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function total()
+    {
+        $this->total = $this->materials->sum('total');
+        $this->total_discount = $this->total - ($this->total * $this->discount / 100);
+        $this->save();
+        //dd($this->total);
+       // return $this->total;
+        //return $this->materials->sum('total');
     }
 }

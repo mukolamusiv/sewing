@@ -79,23 +79,29 @@ class SalesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('companies_id')
+                Tables\Columns\TextColumn::make('company.name')
+                    ->label('Клієнт')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Продавець')
                     ->numeric()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('total')
+                    ->label('Сума')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('discount')
+                    ->label('Знижка')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_discount')
+                    ->label('До оплати')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_payment')
+                    ->label('Оплачено')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
