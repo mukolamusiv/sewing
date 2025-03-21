@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\TransactionResource\Pages;
 
 use App\Filament\Resources\TransactionResource;
+use App\Filament\Resources\TransactionResource\Widgets\WalletWidget;
 use Filament\Actions;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ListRecords;
@@ -53,6 +54,7 @@ class ListTransactions extends ListRecords
                     ->default(0)
                     ->required(),
             ])
+
             ->action(function (array $data) {
                 Wallet::create($data);
 
@@ -78,5 +80,12 @@ class ListTransactions extends ListRecords
             ->request
             ->url()
             ->current());
+    }
+
+    public function getHeaderWidgets(): array
+    {
+        return [
+            WalletWidget::class,
+        ];
     }
 }

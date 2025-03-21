@@ -11,13 +11,20 @@ class TotalCostWidget extends Widget
 
     public $order;
 
-    public function mount(Order $order)
+    public function mount($orderId)
     {
-        $this->order = $order;
+        $this->order = Order::find($orderId);
+
+        if (!$this->order) {
+            throw new \Exception("Order not found!");
+        }
     }
+
+
 
     public function getTotalCost()
     {
-        return $this->order->total_cost;
+       // $this->order->getTotalCost;
+        return $this->order->getTotalCost();
     }
 }

@@ -17,6 +17,7 @@ class Order extends Model
         'status',
         'total_cost',
         'order_template_id',
+        'material_id'
     ];
 
     public function company(): BelongsTo
@@ -34,8 +35,69 @@ class Order extends Model
         return $this->hasMany(MaterialOrder::class);
     }
 
+    public function material(): BelongsTo
+    {
+        return $this->belongsTo(Material::class);
+    }
+
     public function process() :HasMany
     {
         return $this->hasMany(OrderProcess::class,'order_id','id');
     }
+
+    // protected static function booted()
+    // {
+    //     static::retrieved(function ($order) {
+    //         $total_cost = 0;
+    //         foreach ($order->materials as $material) {
+    //             $total_cost += $material->price * $material->count;
+    //         }
+    //         foreach ($order->process as $process) {
+    //             $total_cost += $process->rate_per;
+    //         }
+    //         $order->total_cost = $total_cost;
+    //         $order->save();
+    //     });
+    // }
+
+    // public function getTotalCostAttribute()
+    // {
+    //     return 200;
+    // }
+
+
+    public function getTotalCost()
+    {
+        $total_cost = 0;
+        foreach ($this->materials as $material) {
+            $total_cost += $material->material->unit_cost * $material->quantity;
+        }
+        foreach ($this->process as $process) {
+            $total_cost += $process->rate_per;
+        }
+        //parent::update($attributes, $options);
+        $this->total_cost = $total_cost;
+       // dd($this);
+
+        $this->save();
+        return $this->total_cost;
+        //dd($this->process());
+    }
+
+    // public function update(array $attributes = [], array $options = [])
+    // {
+    //     $total_cost = 0;
+    //     foreach ($this->materials as $material) {
+    //         $total_cost += $material->price * $material->count;
+    //     }
+    //     foreach ($this->process as $process) {
+    //         $total_cost += $process->rate_per;
+    //     }
+    //     parent::update($attributes, $options);
+    //     $this->total_cost = $total_cost;
+    //     dd($this);
+
+    //     $this->save();
+    //     return $this->total_cost;
+    // }
 }

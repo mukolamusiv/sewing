@@ -7,6 +7,8 @@ use App\Filament\Resources\OrderTemplateResource\RelationManagers;
 use App\Filament\Resources\OrderTemplateResource\RelationManagers\MaterialRelationManager;
 use App\Models\OrderTemplate;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -33,19 +35,73 @@ class OrderTemplateResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Назва шаблону')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('material_id')
-                    ->label('Продукт який маємо отримати')
-                    ->required()
-                    ->relationship('material', 'name'),
+                Wizard::make([
+                    Wizard\Step::make('Шаблон')
+                        ->id('tempale')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                            ->label('Назва шаблону')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Select::make('material_id')
+                            ->label('Продукт який маємо отримати')
+                            ->required()
+                            ->searchable()
+                            ->relationship('material', 'name'),
+                            Forms\Components\TextInput::make('price')
+                            ->label('Вартість')
+                            ->required()
+                            ->maxLength(255),
+
+                        ]),
+                    Wizard\Step::make('Матеріали')
+                        ->id('materials')
+                        ->schema([
+                            Repeater::make('materials')
+                            //->relationship('parish')
+                            ->schema([
+                                Forms\Components\Select::make('material_id')
+                                    ->label('Назва матеріалу')
+                                    ->searchable()
+                                    ->relationship('material', 'name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label('Кількість')
+                                    ->numeric()
+                                    ->required(),
+                            ])
+                            ->minItems(1)
+                            ->maxItems(10)
+                            ->label('Додати датеріали для пошиття')
+                            ->required(),
+                        ]),
+                        Wizard\Step::make('Етапи виробництва')
+                        ->id('stages')
+                        ->schema([
+                            Repeater::make('process')
+                            //->relationship('parish')
+                            ->schema([
+                                Forms\Components\Select::make('step')
+                                    ->label('Назва етапу')
+                                    ->searchable()
+                                    ->relationship('processes', 'step')
+                                    ->required(),
+                            ])
+                            ->minItems(1)
+                            ->maxItems(10)
+                            ->label('Додати етап')
+                            ->required(),
+                        ]),
+
+                ]),
+
+
+
+                    /*
                 Forms\Components\TextInput::make('price')
                     ->required()
-                    ->hidden()
                     ->default(100)
-                    ->label('Орієнтовна вартість вартість')
+                    ->label('Орієнтовна вартість вартість')*/
             ]);
     }
 

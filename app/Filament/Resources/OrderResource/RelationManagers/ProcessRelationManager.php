@@ -36,6 +36,11 @@ class ProcessRelationManager extends RelationManager
                     ->options(User::all()->pluck('name', 'id'))
                     ->searchable()
                     ->preload(),
+                Forms\Components\TextInput::make('rate_per')
+                    ->label('Зарплата за етап')
+                    ->required()
+                    ->numeric()
+                    ->maxLength(255),
                 /*Forms\Components\Select::make('existing_process')
                     ->label('Вибрати існуючий етап')
                     ->options(OrderProcess::all()->pluck('step', 'id'))
@@ -59,13 +64,26 @@ class ProcessRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('step')
                     ->label('Етап виробництва'),
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\SelectColumn::make('status')
+                    ->options(
+                        ['очікує' => 'очікує',
+                        'в процесі'=>'в процесі',
+                        'готово'=>'готово',])
                     ->label('Статус'),
                 Tables\Columns\SelectColumn::make('user_to')
                     ->label('Відповідальний')
                     ->options(User::all()->pluck('name', 'id')),
-                Tables\Columns\TextColumn::make('start_time')
-                    ->label('Дата почтку'),
+                // Tables\Columns\TextColumn::make('start_time')
+                //     ->label('Дата почтку'),
+                    Tables\Columns\TextInputColumn::make('start_time')
+                        //->label('Дата початку')
+                        // ->extraAttributes(['class' => 'start-time-column'])
+                        // ->action(function ($record) {
+                        //     $record->start_time = now();
+                        //     $record->save();
+                        // })
+                        // ->button()
+                        ->label('Додати час початку'),
                 Tables\Columns\TextColumn::make('end_time')
                     ->label('Дата кінця'),
             ])

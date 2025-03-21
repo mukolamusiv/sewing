@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource\RelationManagers;
+use App\Filament\Resources\TransactionResource\Widgets\WalletWidget;
 use App\Models\Transaction;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
@@ -139,6 +140,13 @@ class TransactionResource extends Resource
             'index' => Pages\ListTransactions::route('/'),
             'create' => Pages\CreateTransaction::route('/create'),
             'edit' => Pages\EditTransaction::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            WalletWidget::class,
         ];
     }
 

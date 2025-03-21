@@ -42,20 +42,24 @@ class OrderResource extends Resource
                     ->label('Статус замовлення')
                     ->required()
                     ->options([
-                        'new' => 'Нове',
-                        'ordering_materials' => 'Замовлення матеріалів',
-                        'is_performed' => 'Виконується',
-                        'done' => 'Виконано',
-                        'delivered' => 'Доставлено',
+                        'нове' => 'Нове',
+                        'очікує матеріали' => 'очікує матеріали',
+                        'виготовляється' => 'виготовляється',
+                        'готово' => 'готово',
+                        'доставлено' => 'доставлено',
                     ]),
                 Forms\Components\TextInput::make('total_cost')
                     ->label('Орієнтовна вартість')
                     ->hidden()
                     ->numeric(),
                 Forms\Components\Select::make('order_template_id')
-                    ->required()
+                    //->required()
                     ->label('Шаблон замовлення')
                     ->relationship('template', 'name'),
+                Forms\Components\Select::make('material_id')
+                    //->required()
+                    ->label('Виготовити продукт')
+                    ->relationship('material', 'name'),
 //                Forms\Components\Repeater::make('material')
 //                ->schema([
 //                    Forms\Components\Select::make('material_id')
@@ -73,7 +77,7 @@ class OrderResource extends Resource
                     ->label('Замовник')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('template.name')
+                Tables\Columns\TextColumn::make('material.name')
                     ->label('Продукт')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')

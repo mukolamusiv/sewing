@@ -7,7 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderProcess extends Model
 {
-
+    protected $fillable = [
+        'step',
+        'user_to',
+        'status',
+        'start_time',
+        'order_id',
+        'end_time',
+        'rate_per',
+    ];
 
     public function order(): BelongsTo
     {

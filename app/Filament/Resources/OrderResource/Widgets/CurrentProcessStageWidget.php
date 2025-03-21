@@ -11,10 +11,14 @@ class CurrentProcessStageWidget extends Widget
 
     public $order;
 
-    public function mount(Order $order)
-    {
-        $this->order = $order;
+    public function mount($orderId)
+{
+    $this->order = Order::find($orderId);
+
+    if (!$this->order) {
+        throw new \Exception("Order not found!");
     }
+}
 
     public function getCurrentStage()
     {

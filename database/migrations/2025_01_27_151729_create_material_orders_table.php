@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('material_id')->constrained('materials');
             $table->foreignId('order_id')->constrained('orders');
             $table->decimal('quantity', 8, 2);
+            $table->foreignId('warehouse_id')->nullable()->constrained('warehouses');
+            $table->date('write_off')->nullable();
             $table->timestamps();
         });
     }
